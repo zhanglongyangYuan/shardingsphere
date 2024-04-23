@@ -18,6 +18,7 @@
 package org.apache.shardingsphere.core.parse.antlr.rule.registry;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.shardingsphere.core.constant.DatabaseType;
 import org.apache.shardingsphere.core.parse.antlr.rule.jaxb.loader.RuleDefinitionFileConstant;
@@ -31,26 +32,21 @@ import java.util.Collection;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ShardingParsingRuleRegistry extends ParsingRuleRegistry {
-    
-    private static volatile ParsingRuleRegistry instance;
-    
+
     /**
-     * Get singleton instance of parsing rule registry.
+     * -- GETTER --
+     *  Get singleton instance of parsing rule registry.
      *
      * @return instance of parsing rule registry
      */
-    public static ParsingRuleRegistry getInstance() {
-        if (null == instance) {
-            synchronized (ShardingParsingRuleRegistry.class) {
-                if (null == instance) {
-                    instance = new ShardingParsingRuleRegistry();
-                    instance.init();
-                }
-            }
-        }
-        return instance;
+    @Getter
+    private static final ParsingRuleRegistry instance;
+
+    static {
+        instance = new ShardingParsingRuleRegistry();
+        instance.init();
     }
-    
+
     @Override
     protected void fillRuleFilePaths(final DatabaseType databaseType, 
                                      final Collection<String> fillerFilePaths, final Collection<String> extractorFilePaths, final Collection<String> sqlStateRuleFilePaths) {
